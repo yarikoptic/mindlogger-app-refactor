@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,7 @@ type Props = {
 
 const AgeSelector: FC<Props> = ({ config, value, onChange }) => {
   const { t } = useTranslation();
+  const [selectedItem, setSelectedItem] = useState(value);
 
   const ageRange = useMemo(
     () =>
@@ -28,6 +29,7 @@ const AgeSelector: FC<Props> = ({ config, value, onChange }) => {
   );
 
   const onValueChange = (selection: string | number) => {
+    setSelectedItem(selection);
     onChange({ value: selection });
   };
 
@@ -36,7 +38,7 @@ const AgeSelector: FC<Props> = ({ config, value, onChange }) => {
       onValueChange={onValueChange}
       placeholder={t('select:select_one')}
       items={ageRange}
-      value={value}
+      value={selectedItem}
     />
   );
 };

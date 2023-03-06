@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { Select } from '.';
 
@@ -15,19 +15,36 @@ const Dropdown: FC<DropdownProps> = ({
   onValueChange,
   items,
 }) => {
+  const [isOpened, setIsOpened] = useState(false);
+  const onOpen = () => {
+    setIsOpened(!isOpened);
+  };
   return (
-    <Select value={String(value)} onValueChange={onValueChange}>
-      <Select.Trigger>
+    <Select
+      open={isOpened}
+      value={String(value)}
+      onOpenChange={onOpen}
+      onValueChange={onValueChange}
+    >
+      <Select.Trigger jc="center">
         <Select.Value placeholder={placeholder} />
       </Select.Trigger>
 
-      <Select.Content>
-        {items?.map((item, index) => (
-          <Select.Item index={index} key={item} value={String(value)}>
-            <Select.ItemText>{item}</Select.ItemText>
-          </Select.Item>
-        ))}
-      </Select.Content>
+      {isOpened && (
+        <Select.Content>
+          {items?.map((item, index) => (
+            <Select.Item index={index} key={item} value={String(item)}>
+              <Select.ItemText
+                width="100%"
+                textAlign="center"
+                color="$darkGrey"
+              >
+                {item}
+              </Select.ItemText>
+            </Select.Item>
+          ))}
+        </Select.Content>
+      )}
     </Select>
   );
 };
