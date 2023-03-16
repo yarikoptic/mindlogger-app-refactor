@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { styled } from '@tamagui/core';
 import { useTranslation } from 'react-i18next';
 
+import FlankerSandboxView from '@app/entities/flanker/ui/FlankerIOSSandbox/FlankerSandboxView';
 import { LoginForm } from '@features/login';
 import { Center, Text, Image, YStack, XStack, Box } from '@shared/ui';
 
@@ -63,6 +64,16 @@ const LoginScreen: FC = () => {
             </Link>
 
             <LoginForm px="$8" onLoginSuccess={onLoginSuccess} />
+
+            <Box>
+              <FlankerSandboxView
+                message="Hello"
+                imageUrl="https://cdn.cocoacasts.com/cc00ceb0c6bff0d536f25454d50223875d5c79f1/above-the-clouds.jpg"
+                onButtonPress={({ nativeEvent: { message } }: any) =>
+                  console.log(message)
+                }
+              />
+            </Box>
 
             <Center space>
               <XStack space>
