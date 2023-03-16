@@ -77,7 +77,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* MindloggerMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MindloggerMobileTests.m; sourceTree = "<group>"; };
 		01D339DD29C2E672003935D9 /* MindloggerMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MindloggerMobile-Bridging-Header.h"; sourceTree = "<group>"; };
-		01D339DE29C2E672003935D9 /* FlankerSandboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlankerSandboxView.swift; sourceTree = "<group>"; };
+		01D339DE29C2E672003935D9 /* FlankerSandboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlankerSandboxView.swift; sourceTree = "<group>"; usesTabs = 0; };
 		01D339E029C2E8B6003935D9 /* FlankerSandboxViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlankerSandboxViewManager.swift; sourceTree = "<group>"; };
 		01D339E229C2F014003935D9 /* FlankerSandboxViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlankerSandboxViewManager.m; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* MindloggerMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MindloggerMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };

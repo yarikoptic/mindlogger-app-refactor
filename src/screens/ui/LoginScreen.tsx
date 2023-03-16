@@ -1,105 +1,16 @@
 import { FC } from 'react';
-import {
-  Linking,
-  StatusBar,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from 'react-native';
-
-import { useNavigation } from '@react-navigation/native';
-import { styled } from '@tamagui/core';
-import { useTranslation } from 'react-i18next';
 
 import FlankerSandboxView from '@app/entities/flanker/ui/FlankerIOSSandbox/FlankerSandboxView';
-import { LoginForm } from '@features/login';
-import { Center, Text, Image, YStack, XStack, Box } from '@shared/ui';
-
-import { whiteLogo } from '@images';
-
-const Link = styled(Text, { color: '$secondary' });
 
 const LoginScreen: FC = () => {
-  const { navigate } = useNavigation();
-  const { t } = useTranslation();
-  const title = 'MindLogger';
-
-  const navigateToSignUp = () => {
-    navigate('SignUp');
-  };
-
-  const navigateToForgotPassword = () => {
-    navigate('ForgotPassword');
-  };
-
-  const navigateToAbout = () => {
-    navigate('AboutApp');
-  };
-
-  const navigateToAppLanguage = () => {
-    navigate('ChangeLanguage');
-  };
-
-  const navigateToTerms = () => {
-    Linking.openURL('https://mindlogger.org/terms');
-  };
-
-  const onLoginSuccess = () => {
-    navigate('Applets');
-  };
-
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Box flex={1} bg="$primary">
-        <StatusBar />
-
-        <Box flex={1} jc="center">
-          <YStack space={30}>
-            <Link
-              color="$secondary"
-              fontWeight="400"
-              fontSize={40}
-              alignSelf="center"
-            >
-              {title}
-            </Link>
-
-            <LoginForm px="$8" onLoginSuccess={onLoginSuccess} />
-
-            <Box>
-              <FlankerSandboxView
-                message="Hello"
-                imageUrl="https://cdn.cocoacasts.com/cc00ceb0c6bff0d536f25454d50223875d5c79f1/above-the-clouds.jpg"
-                onButtonPress={({ nativeEvent: { message } }: any) =>
-                  console.log(message)
-                }
-              />
-            </Box>
-
-            <Center space>
-              <XStack space>
-                <Link onPress={navigateToSignUp}>{t('login:new_user')}</Link>
-
-                <Link onPress={navigateToForgotPassword}>
-                  {t('login:forgot_password')}
-                </Link>
-              </XStack>
-
-              <Link onPress={navigateToAbout}>{`${t(
-                'login:what_is',
-              )} ${title}?`}</Link>
-
-              <Link onPress={navigateToAppLanguage}>
-                {t('language_screen:change_app_language')}
-              </Link>
-
-              <Link onPress={navigateToTerms}>{t('Terms of Service')}</Link>
-            </Center>
-
-            <Image alignSelf="center" src={whiteLogo} width={70} height={70} />
-          </YStack>
-        </Box>
-      </Box>
-    </TouchableWithoutFeedback>
+    <FlankerSandboxView
+      message={'Hello, React Native IOS custom view'}
+      onClick={(event: Object) => {
+        console.log('Click event: ' + JSON.stringify(event));
+      }}
+      style={{ width: '100%', height: 100, marginTop: 100 }}
+    />
   );
 };
 

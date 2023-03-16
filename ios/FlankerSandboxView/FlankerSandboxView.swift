@@ -10,67 +10,48 @@ import UIKit
 
 @objc(FlankerSandboxView)
 class FlankerSandboxView: UIView {
-  @objc var onButtonPress: RCTDirectEventBlock?
-
-  @objc var message: NSString = "Test" {
-    didSet {
-      labelView.text = message as String
-    }
-  }
-  @objc var imageUrl: NSString = "" {
-    didSet {
-      let url = URL(string: imageUrl as String)
-      // "https://cdn.cocoacasts.com/cc00ceb0c6bff0d536f25454d50223875d5c79f1/above-the-clouds.jpg")!
-      
-      if let data = try? Data(contentsOf: url!) {
-          // Create Image and Update Image View
-        imageView.image = UIImage(data: data)
+  @objc var message: String? = "Hello Native Custom View" {
+      didSet {
+          self.setupView()
       }
-          
-    }
   }
-  
-  @objc var labelView: UILabel!
-  @objc var imageView: UIImageView!
-  @objc var button: UIButton!
+
+  @objc var onClick: RCTBubblingEventBlock?
   
   override init(frame: CGRect) {
-    super.init(frame: frame)
-    self.translatesAutoresizingMaskIntoConstraints = false
-        
-    setupView()
+      super.init(frame: frame)
   }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+
+  required init?(coder aDecoder: NSCoder) {
+      super.init(coder: aDecoder)
+      setupView()
   }
   
   private func setupView() {
-    labelView = UILabel()
-    self.addSubview(labelView)
-    labelView.translatesAutoresizingMaskIntoConstraints = false
+    self.backgroundColor = .red
+    self.isUserInteractionEnabled = true
     
-    imageView = UIImageView()
-    self.addSubview(imageView)
-    imageView.translatesAutoresizingMaskIntoConstraints = false
-    imageView.topAnchor.constraint(equalTo: labelView.bottomAnchor).isActive = true
-    imageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-    imageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+    let label = UILabel()
+    label.center = self.center
+    label.textColor = .white
+    label.text = self.message
+    label.sizeToFit()
+    self.addSubview(label)
     
-    button = UIButton(type: .system)
-    button.isUserInteractionEnabled = true
-    button.setTitle("Send to RN", for: .normal)
-    button.addTarget(self, action: #selector(self.press(_:)), for: .touchUpInside)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    self.addSubview(button)
-    button.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 40).isActive = true
+    label.translatesAutoresizingMaskIntoConstraints = false
+    
+    NSLayoutConstraint.activate([
+      label.widthAnchor.constraint(equalToConstant: 260),
+      label.heightAnchor.constraint(equalToConstant: 30),
+      label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+      label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+    ])
   }
   
-  @objc func press(_ sender: UIButton) {
-    print("press")
-    if onButtonPress != nil {
-      onButtonPress!(["message": "Hello native"])
-    }
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let onClick = self.onClick else { return }
+
+    let params: [String : Any] = ["message":"hey, you've touched screen."]
+    onClick(params)
   }
 }
-
