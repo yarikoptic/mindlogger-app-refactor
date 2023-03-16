@@ -7,13 +7,14 @@ type Props = {
   message: string;
   onClick: (event: any) => void;
   style: any;
+  imageUrl: string;
 };
 
 const RCTFlankerSandboxView =
   requireNativeComponent<Props>('FlankerSandboxView');
 
 const MyNativeCustomView: React.FC<Props> = props => {
-  const { message, onClick, style } = props;
+  const { message, onClick, style, imageUrl } = props;
   const _onClick = (event: any) => {
     if (!onClick) {
       return;
@@ -23,7 +24,12 @@ const MyNativeCustomView: React.FC<Props> = props => {
   };
 
   return (
-    <RCTFlankerSandboxView message={message} onClick={_onClick} style={style} />
+    <RCTFlankerSandboxView
+      imageUrl={imageUrl}
+      message={message}
+      onClick={_onClick}
+      style={style}
+    />
   );
 };
 
