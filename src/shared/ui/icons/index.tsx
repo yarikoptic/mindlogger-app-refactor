@@ -81,3 +81,7 @@ export const AlarmIcon: FC<IconProps> = props => (
 export const GeolocationIcon: FC<IconProps> = props => (
   <FontAwesome name="map-marker" {...props} />
 );
+
+export const PhotoIcon: FC<IconProps> = props => (
+  <Entypo name="camera" {...props} />
+);
