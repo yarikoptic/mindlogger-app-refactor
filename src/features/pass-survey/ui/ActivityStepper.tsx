@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { HourMinute } from '@app/shared/lib';
 import { ActivityIndicator, Box, Center, Stepper, XStack } from '@shared/ui';
 
 import ActivityItem from './ActivityItem';
@@ -12,12 +13,13 @@ import {
   useActivityState,
   useActivityStepper,
 } from '../model';
+import useIdleTimer from '../model/hooks/useIdleTimer';
 
 type Props = {
   appletId: string;
   activityId: string;
   eventId: string;
-
+  idleTimer?: HourMinute | null;
   onClose: () => void;
   onFinish: () => void;
 };
@@ -26,6 +28,7 @@ function ActivityStepper({
   appletId,
   activityId,
   eventId,
+  idleTimer,
   onClose,
   onFinish,
 }: Props) {
@@ -66,16 +69,23 @@ function ActivityStepper({
     isValid,
   } = useActivityStepper(activityStorageRecord);
 
+  const { onActionToIdle, onClose: onCloseToIdle } = useIdleTimer({
+    onFinish,
+    hourMinute: idleTimer,
+  });
+
   const currentStep = activityStorageRecord?.step ?? 0;
 
   const tutorialViewerRef = useRef<TutorialViewerRef>(null);
 
   const onNext = (nextStep: number) => {
     setCurrentStep(nextStep);
+    onActionToIdle();
   };
 
   const onBack = (nextStep: number) => {
     setCurrentStep(nextStep);
+    onActionToIdle();
   };
 
   const onBeforeNext = (): number => {
@@ -86,6 +96,8 @@ function ActivityStepper({
     if (isTutorialStep) {
       const moved = tutorialViewerRef.current?.next();
 
+      !moved && onActionToIdle();
+
       return moved ? 0 : 1;
     }
 
@@ -95,6 +107,8 @@ function ActivityStepper({
   const onBeforeBack = (): number => {
     if (isTutorialStep) {
       const moved = tutorialViewerRef.current?.back();
+
+      !moved && onActionToIdle();
 
       return moved ? 0 : 1;
     }
@@ -123,9 +137,15 @@ function ActivityStepper({
         onBack={onBack}
         onBeforeNext={onBeforeNext}
         onBeforeBack={onBeforeBack}
-        onStartReached={onClose}
+        onStartReached={() => {
+          onClose();
+          onCloseToIdle();
+        }}
         onEndReached={onFinish}
-        onUndo={onUndo}
+        onUndo={() => {
+          onUndo();
+          onActionToIdle();
+        }}
       >
         {showTopNavigation && (
           <Stepper.NavigationPanel mx={16}>
@@ -141,7 +161,12 @@ function ActivityStepper({
             const value = activityStorageRecord.answers[index];
 
             return (
-              <XStack flex={1} key={index} alignItems="center">
+              <XStack
+                flex={1}
+                key={index}
+                alignItems="center"
+                onTouchStart={() => onActionToIdle()}
+              >
                 <>
                   {pipelineItem.type === 'Tutorial' && (
                     <TutorialViewerItem
