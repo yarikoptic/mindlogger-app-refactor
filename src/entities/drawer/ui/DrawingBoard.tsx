@@ -45,10 +45,11 @@ type Props = {
   onStarted: () => void;
   onResult: (result: DrawResult) => void;
   width: number;
+  drawingStarted?: boolean;
 };
 
 const DrawingBoard: FC<Props> = props => {
-  const { value, onResult, onStarted, width } = props;
+  const { value, onResult, onStarted, width, drawingStarted } = props;
 
   const isEmpty = !value.length;
 
@@ -201,7 +202,7 @@ const DrawingBoard: FC<Props> = props => {
       borderWidth={1}
       borderColor="$lightGrey2"
     >
-      <SkiaView onDraw={onDraw} style={styles.skiaView} />
+      {drawingStarted && <SkiaView onDraw={onDraw} style={styles.skiaView} />}
 
       <View style={styles.canvasView} pointerEvents="none">
         <Canvas style={styles.canvas}>

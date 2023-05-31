@@ -91,8 +91,8 @@ function ActivityItem({
       item = (
         <Box
           flex={1}
-          onPressIn={IS_ANDROID ? null : stopScrolling}
-          onPressOut={IS_ANDROID ? null : releaseScrolling}
+          // onPressIn={IS_ANDROID ? null : stopScrolling}
+          // onPressOut={IS_ANDROID ? null : releaseScrolling}
         >
           <DrawingTest
             flex={1}
@@ -100,6 +100,12 @@ function ActivityItem({
             value={value?.answer?.lines ?? []}
             onStarted={() => console.log('onStarted')}
             onResult={onResponse}
+            onStartDrawing={() => {
+              stopScrolling();
+            }}
+            onStopDrawing={() => {
+              releaseScrolling();
+            }}
           />
         </Box>
       );

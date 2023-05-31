@@ -55,6 +55,12 @@ const ScrollableContent: FC<Props> = ({ children, scrollEnabled }: Props) => {
   }
 
   useEffect(() => {
+    if (!scrollEnabled) {
+      setTimeout(() => scrollToEnd(), 100);
+    }
+  }, [scrollEnabled]);
+
+  useEffect(() => {
     if (!containerHeight || !debouncedScrollContentHeight) {
       return;
     }
