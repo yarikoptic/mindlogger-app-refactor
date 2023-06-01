@@ -16,12 +16,28 @@ type Props = {
   backgroundImageUrl: string | null;
   onStarted: () => void;
   onResult: (result: DrawResult) => void;
+  scrollEnabled: boolean;
+  stopScrolling: () => void;
 } & BoxProps;
 
 const DrawingTest: FC<Props> = props => {
   const [width, setWidth] = useState<number | null>(null);
 
-  const { value, backgroundImageUrl, imageUrl, onStarted, onResult } = props;
+  const {
+    value,
+    //backgroundImageUrl,
+    // imageUrl,
+    onStarted,
+    onResult,
+    scrollEnabled,
+    stopScrolling,
+  } = props;
+
+  const imageUrl =
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Spiral-fermat-1.svg/1920px-Spiral-fermat-1.svg.png';
+
+  const spiral =
+    'https://www.shutterstock.com/image-vector/abstract-spiral-black-white-design-600w-1071243008.jpg';
 
   return (
     <Box
@@ -33,9 +49,10 @@ const DrawingTest: FC<Props> = props => {
           setWidth(containerWidth);
         }
       }}
+      mb={150}
     >
       {!!imageUrl && (
-        <XStack jc="center">
+        <XStack jc="center" opacity={scrollEnabled ? 1 : 0.5}>
           <CachedImage
             source={imageUrl}
             style={{
@@ -52,20 +69,31 @@ const DrawingTest: FC<Props> = props => {
 
       {!!width && (
         <XStack jc="center">
-          {!!backgroundImageUrl && (
-            <CachedImage
-              source={backgroundImageUrl}
-              style={{ position: 'absolute', width, height: width }}
-              resizeMode="contain"
-            />
-          )}
+          <Box width={width} height={width} backgroundColor={'$grey'}>
+            <Box
+              width={width}
+              height={width}
+              backgroundColor="white"
+              opacity={scrollEnabled ? 0.7 : 1}
+            >
+              {!!spiral && (
+                <CachedImage
+                  source={spiral}
+                  style={{ position: 'absolute', width, height: width }}
+                  resizeMode="contain"
+                />
+              )}
 
-          <DrawingBoard
-            value={value}
-            onResult={onResult}
-            onStarted={onStarted}
-            width={width}
-          />
+              <DrawingBoard
+                scrollEnabled={scrollEnabled}
+                stopScrolling={stopScrolling}
+                value={value}
+                onResult={onResult}
+                onStarted={onStarted}
+                width={width}
+              />
+            </Box>
+          </Box>
         </XStack>
       )}
     </Box>

@@ -44,11 +44,14 @@ type Props = {
   value: Array<DrawLine>;
   onStarted: () => void;
   onResult: (result: DrawResult) => void;
+  stopScrolling: () => void;
+  scrollEnabled: boolean;
   width: number;
 };
 
 const DrawingBoard: FC<Props> = props => {
-  const { value, onResult, onStarted, width } = props;
+  const { value, onResult, onStarted, width, scrollEnabled, stopScrolling } =
+    props;
 
   const isEmpty = !value.length;
 
@@ -193,6 +196,9 @@ const DrawingBoard: FC<Props> = props => {
     [width, touchHandler],
   );
 
+  console.log('db scrollEnabled', scrollEnabled);
+  //  console.log('db stopScrolling', !!stopScrolling);
+
   return (
     <Box
       width={width}
@@ -200,8 +206,16 @@ const DrawingBoard: FC<Props> = props => {
       zIndex={1}
       borderWidth={1}
       borderColor="$lightGrey2"
+      onTouchStart={e => {
+        console.log('stop!!!');
+        if (scrollEnabled) {
+          stopScrolling();
+        }
+        e.stopPropagation();
+      }}
+      //backgroundColor="white"
     >
-      <SkiaView onDraw={onDraw} style={styles.skiaView} />
+      {!scrollEnabled && <SkiaView onDraw={onDraw} style={styles.skiaView} />}
 
       <View style={styles.canvasView} pointerEvents="none">
         <Canvas style={styles.canvas}>

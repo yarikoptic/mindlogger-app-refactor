@@ -106,6 +106,7 @@ export const buildDateFromDto = (
   if (!dto) {
     return null;
   }
+  //  const result = new Date(dto);
   const result = new Date(`${dto}T00:00`);
 
   if (result.getFullYear() === 1 || result.getFullYear() === 9999) {

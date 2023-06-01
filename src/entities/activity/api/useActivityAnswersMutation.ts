@@ -46,7 +46,7 @@ const uploadAnswerMediaFiles = async (body: SendAnswersInput) => {
     const { value: answerValue } = itemAnswer;
 
     const isMediaItem = answerValue?.uri && isFileUrl(answerValue.uri);
-
+    //FileSystem.appendFile
     if (isMediaItem) {
       const localFileExists = await FileSystem.exists(answerValue.uri);
       if (localFileExists) {

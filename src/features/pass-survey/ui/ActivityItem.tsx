@@ -60,15 +60,23 @@ function ActivityItem({
   let item: JSX.Element | null;
   const question = pipelineItem.question;
 
-  const stopScrolling = () => setScrollEnabled(false);
+  const stopScrolling = () => {
+    console.log('stopScrolling!');
+    setScrollEnabled(false);
+  };
 
-  const releaseScrolling = () => setScrollEnabled(true);
+  const releaseScrolling = () => {
+    console.log('!releaseScrolling');
+    setScrollEnabled(true);
+  };
 
   function moveToNextItem() {
     if (!pipelineItem.additionalText?.required) {
       setImmediate(next);
     }
   }
+
+  console.log('ai scrollEnabled', scrollEnabled);
 
   switch (type) {
     case 'Splash':
@@ -91,8 +99,8 @@ function ActivityItem({
       item = (
         <Box
           flex={1}
-          onPressIn={IS_ANDROID ? null : stopScrolling}
-          onPressOut={IS_ANDROID ? null : releaseScrolling}
+          // onPressIn={IS_ANDROID ? null : stopScrolling}
+          // onPressOut={IS_ANDROID ? null : releaseScrolling}
         >
           <DrawingTest
             flex={1}
@@ -100,6 +108,8 @@ function ActivityItem({
             value={value?.answer?.lines ?? []}
             onStarted={() => console.log('onStarted')}
             onResult={onResponse}
+            scrollEnabled={scrollEnabled}
+            stopScrolling={stopScrolling}
           />
         </Box>
       );
@@ -312,15 +322,29 @@ function ActivityItem({
     }
   }
 
+  console.log('scrollEnabled', scrollEnabled);
+
   return (
-    <ScrollableContent scrollEnabled={scrollEnabled}>
-      <Box flex={1} justifyContent="center">
+    <ScrollableContent
+      scrollEnabled={scrollEnabled}
+      //releaseScrolling={releaseScrolling}
+    >
+      <Box
+        flex={1}
+        justifyContent="center"
+        backgroundColor={!scrollEnabled ? '$lightGrey' : 'white'}
+        // onTouchMove={() => releaseScrolling()}
+        onTouchStart={() => releaseScrolling()}
+      >
         {question && (
           <Box mx={16} mb={20}>
             <MarkdownMessage
               flex={1}
               alignItems="center"
-              content={textVariableReplacer(question)}
+              content={
+                'Please use this template to draw spiral.' // ??
+                //textVariableReplacer(question)
+              }
             />
           </Box>
         )}

@@ -12,11 +12,16 @@ import { Box, ScrollButton } from '@app/shared/ui';
 
 type Props = {
   scrollEnabled: boolean;
+  //releaseScrolling: () => void;
 } & PropsWithChildren;
 
 const PaddingToBottom = 40;
 
-const ScrollableContent: FC<Props> = ({ children, scrollEnabled }: Props) => {
+const ScrollableContent: FC<Props> = ({
+  children,
+  scrollEnabled,
+}: // releaseScrolling,
+Props) => {
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
 
   const [scrollContentHeight, setScrollContentHeight] = useState<number | null>(
